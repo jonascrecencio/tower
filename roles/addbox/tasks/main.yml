@@ -1,0 +1,44 @@
+---
+- name: Copiando arquivos de provisionamento
+  copy:
+    src: "{{ provisioning_path }}"
+    dest: "{{ provisioning_path }}"
+
+- name: Criando diretório do Vagrant
+  file:
+    path: "{{ provisioning_path }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id'] }}/"
+    state: directory
+  loop: "{{ groups['new_vms'] }}"
+  loop_control:
+    index_var: my_idx
+  when: host_id == hostvars[groups['new_vms'][my_idx]]['vm_host_id']
+
+- name: Criando Vagrantfile
+  template:
+    src: "../templates/Vagrantfile.j2"
+    dest: "{{ provisioning_path }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id'] }}/Vagrantfile"
+  loop: "{{ groups['new_vms'] }}"
+  loop_control:
+    index_var: my_idx  
+  when: host_id == hostvars[groups['new_vms'][my_idx]]['vm_host_id']
+
+- name: Ativando Máquinas Virtuais
+  shell: vagrant up --provider=libvirt
+  args:
+    chdir: "{{ provisioning_path }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id'] }}/"
+  loop: "{{ groups['new_vms'] }}"
+  loop_control:
+    index_var: my_idx  
+  when: host_id == hostvars[groups['new_vms'][my_idx]]['vm_host_id']
+
+- name: Reboot das VMs para aplicação das configurações de rede e interface
+  shell: vagrant reload
+  args:
+    chdir: "{{ provisioning_path }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id'] }}/"
+  loop: "{{ groups['new_vms'] }}"
+  loop_control:
+    index_var: my_idx  
+  when: host_id == hostvars[groups['new_vms'][my_idx]]['vm_host_id']
+
+- name: Adiciona rede vagrant-libvirt na inicialização
+  shell: virsh net-autostart vagrant-libvirt

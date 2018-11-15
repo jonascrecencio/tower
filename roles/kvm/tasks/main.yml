@@ -1,0 +1,23 @@
+---
+- name: Instalando KVM e bibliotecas de virtualização
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items:
+      - qemu-kvm
+      - libvirt
+      - libvirt-python
+      - libguestfs-tools
+      - virt-install
+      - NetworkManager-glib
+      - libvirt-devel
+
+- name: Habilitando libvirtd na inicialização do sistema
+  systemd:
+    name: libvirtd
+    enabled: yes
+
+- name: Executando o libvirtd
+  systemd:
+    name: libvirtd
+    state: started

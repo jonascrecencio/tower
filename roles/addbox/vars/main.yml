@@ -1,0 +1,2 @@
+hostname: node{{ host_id|quote }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id']|quote }}.tcc.local
+shortname: node{{ host_id|quote }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id']|quote }}

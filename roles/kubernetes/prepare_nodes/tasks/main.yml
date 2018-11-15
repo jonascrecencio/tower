@@ -1,0 +1,107 @@
+---
+- name: Instalando o Kubernetes
+  yum:
+    name:
+      - kubelet
+      - kubeadm
+      - kubectl
+    update_cache: yes
+    state: latest
+
+- name: Adicionando Bridge-Nf-Call
+  copy:
+    src: ../files/k8s.conf
+    dest: /etc/sysctl.d/k8s.conf
+
+- name: Aplicando parâmetros do sysctl
+  shell: sysctl -p --system; systemctl daemon-reload
+  become: yes
+
+- name: Copiando arquivo com os módulos que serão habilitados para o Kubernetes
+  copy:
+    src: ../files/mod_kub.conf
+    dest: /etc/modules-load.d/mod_kub.conf
+
+- name: Carregando módulos para o Kubernetes
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+     - ip_vs
+     - ip_vs_rr
+     - ip_vs_wrr
+     - ip_vs_sh
+     - nf_conntrack_ipv4
+
+- name: Iniciando o serviço do Kubernetes
+  service:
+    name: kubelet
+    state: started
+
+- name: Habilitando Kubernetes na inicialização do sistema
+  service:
+    name: kubelet    
+    enabled: yes
+
+- name: Remove SWAP da Inicialização
+  lineinfile:
+    dest: /etc/fstab
+    regexp: '^(.*)swap(.*)$'
+    state: absent
+
+- name: Desabilitando SWAP
+  shell: swapoff -a
+  become: yes
+
+- name: Adicionando auto completar à inicialização
+  lineinfile:
+    path: /root/.bashrc
+    regexp: '^source <(kubectl completion bash)'
+    line: 'source <(kubectl completion bash)'
+
+- name: Criando estrutura de pastas
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+     - /kubernetes
+     - /kubernetes/networks
+     - /kubernetes/ipsec
+
+- name: Instalando GIT e GO-LANG
+  yum:
+    name:
+      - git-all
+      - golang-bin
+    state: latest
+    
+- name: Clonando repositório MULTUS-CNI
+  git: 
+   repo: https://github.com/intel/multus-cni
+   dest: /kubernetes/networks/multus-cni
+
+- name: Clonando repositório CNI-PLUGINS
+  git:
+   repo: https://github.com/containernetworking/plugins
+   dest: /kubernetes/networks/plugins
+
+- name: Compilando plugins MULTUS-CNI e CNI-PLUGINS
+  shell: sh /kubernetes/networks/plugins/build_linux.sh && ./build
+  args:
+    chdir: /kubernetes/networks/multus-cni
+
+- name: Adicionando plugin STATIC
+  copy:
+    src: /kubernetes/networks/plugins/bin/static
+    dest: /opt/cni/bin/
+    remote_src: yes
+
+- name: Dando permissão no plugin STATIC
+  file:
+    path: /opt/cni/bin/static
+    mode: u+x
+
+- name: Copiando arquivos do IPSEC
+  copy:
+    src: "{{ provisioning_path }}files/ipsec/"
+    dest: "/kubernetes/ipsec/"

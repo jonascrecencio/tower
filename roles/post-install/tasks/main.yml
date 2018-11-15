@@ -1,0 +1,67 @@
+---
+- name: Desabilitando SELINUX
+  selinux:
+    policy: targeted
+    state: permissive
+
+- name: Desabilitando firewalld da inicialização do sistema
+  systemd:
+    name: firewalld
+    enabled: no
+
+- name: Parando o serviço do firewalld
+  systemd:
+    name: firewalld
+    state: stopped
+
+- name: Configurando servidor DNS
+  template:
+    src: ../templates/resolv.conf.j2
+    dest: /etc/resolv.conf
+
+- name: Coletando shortname
+  command: "hostname -s"
+  register: shortname
+
+- name: Configurando /etc/hosts localhost4
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^127\.0\.0\.1'
+    line: '127.0.0.1 localhost localhost.localdomain localhost4 localhost4.localdomain4 {{ shortname.stdout }} {{ inventory_hostname }}'
+
+- name: Configurando /etc/hosts localhost6
+  lineinfile:
+    path: /etc/hosts
+    regexp: '^\:\:1'
+    line: '::1 localhost localhost.localdomain localhost6 localhost6.localdomain6 {{ shortname.stdout }} {{ inventory_hostname }}'
+
+- name: Atualizando os pacotes do sistema
+  yum:
+    name: '*'
+    update_cache: yes
+    state: latest
+
+- name: Criando /root/.ssh/
+  file:
+    path: /root/.ssh/
+    state: directory
+
+- name: Cria arquivo Authorized_keys
+  copy:
+    content: ""
+    dest: /root/.ssh/authorized_keys
+    force: no
+
+- name: Autorizando chave para acesso ssh como root
+  lineinfile:
+    path: /root/.ssh/authorized_keys
+    line: "{{ ansible_prov_pub_key }}"
+
+- name: Adicionando Forwarding IPv6
+  copy:
+    src: ../files/ipv6.conf
+    dest: /etc/sysctl.d/ipv6.conf
+
+- name: Aplicando parâmetros do sysctl
+  shell: sysctl -p --system; systemctl daemon-reload
+  become: yes

@@ -1,0 +1,14 @@
+---
+- name: VM Provisioning
+  hosts: new_vms
+  strategy: free
+  
+  roles:
+    - ../../roles/repos # ok
+    - ../../roles/utils # ok
+    - ../../roles/docker # ok
+    - ../../roles/ipsec-prereqs # ok
+    - ../../roles/kubernetes/prepare_nodes # ok
+
+  vars_files:
+    - ../../vars/main.yml

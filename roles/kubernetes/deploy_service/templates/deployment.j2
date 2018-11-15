@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+        name: {{ ipsec_name }}
+        labels:
+                service: ipsec
+spec:
+        selector:
+                matchLabels:
+                        service: ipsec
+        replicas: 1
+        template:
+                metadata:
+                        annotations:
+                                k8s.v1.cni.cncf.io/networks: '[
+                                        { "name": "{{ ipsec_name }}-wan" },
+                                        { "name": "{{ ipsec_name }}-lan" }
+                                        ]'
+                        labels:
+                                service: ipsec
+                spec:
+                        containers:
+                        - name: {{ ipsec_name }}
+                          image: jlmv/libreswan-centos
+                          securityContext:
+                                privileged: true
+                          volumeMounts:
+                                - name: {{ ipsec_name }}-conf
+                                  mountPath: /etc/ipsec.d/{{ ipsec_name }}.conf
+                                - name: {{ ipsec_name }}-secrets
+                                  mountPath: /etc/ipsec.d/{{ ipsec_name }}.secrets
+                          lifecycle:
+                                postStart:
+                                        exec:
+                                                command: ["/bin/sh","-c","ip -6 ad add {{ pod_wan_ip6 }} dev net1; ip r add {{ ipsec_peer }} via {{ pod_wan_gw }} dev net1; sleep 2; ipsec whack --listen "]
+                        volumes:
+                        - name: {{ ipsec_name }}-conf
+                          hostPath:
+                                path: /kubernetes/ipsec/{{ ipsec_name }}.conf
+                                type: File
+                        - name: {{ ipsec_name }}-secrets
+                          hostPath:
+                                path: /kubernetes/ipsec/{{ ipsec_name }}.secrets
+                                type: File

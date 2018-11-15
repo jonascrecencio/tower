@@ -1,0 +1,16 @@
+---
+- name: Deploy de máquina física
+  hosts:  new_hosts
+  strategy: free
+
+  roles:
+    - ../../roles/name # ok
+    - ../../roles/post-install # ok
+    - ../../roles/repos # ok
+    - ../../roles/utils # ok
+    - ../../roles/kvm # ok
+    - ../../roles/ansible # ok
+    - ../../roles/vagrant # ok
+
+  vars_files:
+    - ../../vars/main.yml

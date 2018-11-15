@@ -1,0 +1,62 @@
+---
+- name: Criando estrutura de pastas
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+     - /kubernetes/ipsec
+
+- name: Copiando ipsec.conf
+  copy:
+    src: /etc/ansible/files/ipsec/{{ ipsec_name }}.conf
+    dest: /kubernetes/ipsec/{{ ipsec_name }}.conf
+
+- name: Copiando ipsec.secrets
+  copy:
+    src: /etc/ansible/files/ipsec/{{ ipsec_name }}.secrets
+    dest: /kubernetes/ipsec/{{ ipsec_name }}.secrets
+
+## Executa em todos os Master's
+
+- name: Criando estrutura de pastas
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+     - /kubernetes/ipsec/{{ ipsec_name }}/files
+  when: mode == "master" or mode == "master-init" or mode == "master-active"
+
+- name: Criando arquivo da interface LAN - Kubernetes
+  template:
+    src: ../templates/net-lan.j2
+    dest: /kubernetes/ipsec/{{ ipsec_name }}/files/{{ ipsec_name }}-lan.conf
+  when: mode == "master" or mode == "master-init" or mode == "master-active"
+
+- name: Criando arquivo da interface WAN - Kubernetes
+  template:
+    src: ../templates/net-wan.j2
+    dest: /kubernetes/ipsec/{{ ipsec_name }}/files/{{ ipsec_name }}-wan.conf
+  when: mode == "master" or mode == "master-init" or mode == "master-active"
+
+- name: Criando arquivo de Deployment do POD
+  template:
+    src: ../templates/deployment.j2
+    dest: /kubernetes/ipsec/{{ ipsec_name }}/files/dep-{{ ipsec_name }}.conf
+  when: mode == "master" or mode == "master-init" or mode == "master-active"
+
+## Executa somente no master-init
+
+- name: Criando Network Kubernetes - LAN
+  shell: kubectl apply -f /kubernetes/ipsec/{{ ipsec_name }}/files/{{ ipsec_name }}-lan.conf
+  become: yes
+  when: mode == "master-init" or mode == "master-active"
+
+- name: Criando Network Kubernetes - WAN
+  shell: kubectl apply -f /kubernetes/ipsec/{{ ipsec_name }}/files/{{ ipsec_name }}-wan.conf
+  become: yes
+  when: mode == "master-init" or mode == "master-active"
+
+- name: Iniciando POD - {{ ipsec_name }}
+  shell: kubectl apply -f /kubernetes/ipsec/{{ ipsec_name }}/files/dep-{{ ipsec_name }}.conf
+  become: yes
+  when: mode == "master-init" or mode == "master-active"

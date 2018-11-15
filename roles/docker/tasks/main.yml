@@ -1,0 +1,25 @@
+---
+- name: Instalando dependências do docker
+  yum:
+    name:
+      - yum-utils
+      - device-mapper-persistent-data
+      - lvm2
+    state: latest
+
+- name: Instalando docker
+  yum:
+    name: docker-ce-18.06.1.ce-3.el7
+    update_cache: yes
+    disable_gpg_check: yes
+    state: latest
+
+- name: Habilitando o docker na inicialização do sistema
+  systemd:
+    name: docker
+    enabled: yes
+
+- name: Executando o docker
+  systemd:
+    name: docker
+    state: started

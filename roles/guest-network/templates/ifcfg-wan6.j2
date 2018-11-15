@@ -1,0 +1,20 @@
+NM_CONTROLLED=no
+TYPE=Ethernet
+BOOTPROTO=static
+
+NAME="{{ wan_iface_name }}"
+DEVICE="{{ wan_iface_name }}"
+HWADDR="{{ wan_hwaddr }}"
+ONBOOT=yes
+
+IPADDR="{{ wan_v4 }}"
+PREFIX="{{ wan_v4_prefix }}"
+GATEWAY="{{ default_gw4 }}"
+DEFROUTE=yes
+PEERDNS=no
+
+IPV6INIT=yes
+IPV6ADDR="{{ wan_v6 }}/{{ wan_v6_prefix }}"
+IPV6_AUTOCONF=no
+IPV6_DEFROUTE=yes
+IPV6_DEFAULTGW={{ default_gw6 }}%{{ wan_iface_name }}

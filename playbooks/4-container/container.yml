@@ -1,0 +1,11 @@
+---
+- name: Deploying Service
+  hosts: active_vms
+  become: yes
+  
+  roles:
+    - ../../roles/kubernetes/deploy_service
+
+  vars_files:
+    - ../../vars/main.yml
+    - ../../vars/service.yml

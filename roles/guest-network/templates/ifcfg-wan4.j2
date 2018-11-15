@@ -1,0 +1,17 @@
+NM_CONTROLLED=no
+TYPE=Ethernet
+BOOTPROTO=static
+
+NAME="{{ wan_iface_name }}"
+DEVICE="{{ wan_iface_name }}"
+HWADDR="{{ wan_hwaddr }}"
+ONBOOT=yes
+
+IPADDR="{{ wan_v4 }}"
+PREFIX="{{ wan_v4_prefix }}"
+GATEWAY="{{ default_gw4 }}"
+DEFROUTE=yes
+PEERDNS=no
+
+IPV6INIT=no
+IPV6_AUTOCONF=no

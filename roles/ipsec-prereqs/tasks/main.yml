@@ -1,0 +1,16 @@
+---
+- name: Criando arquivo do modprobe para o ipsec
+  file:
+    path: /etc/modules-load.d/ipsec.conf
+    state: touch
+
+- name: Habilitando o módulo IPsec
+  lineinfile:
+    path: /etc/modules-load.d/ipsec.conf
+    regexp: '^af_key$'
+    line: 'af_key'
+
+- name: Carregando o módulo IPsec
+  modprobe:
+    name: af_key
+    state: present

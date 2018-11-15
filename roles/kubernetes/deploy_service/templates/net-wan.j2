@@ -1,0 +1,19 @@
+apiVersion: "k8s.cni.cncf.io/v1"
+kind: NetworkAttachmentDefinition
+metadata:
+  name: {{ ipsec_name }}-wan
+spec:
+  config: '{
+      "cniVersion": "0.3.0",
+      "type": "macvlan",
+      "master": "{{ wan_iface_name }}",
+      "mode": "bridge",
+      "ipam": {
+        "type": "static",
+	  "addresses": [
+		{
+		        "address": "{{ pod_wan_ip4 }}"
+		}
+		]
+	}    
+}'

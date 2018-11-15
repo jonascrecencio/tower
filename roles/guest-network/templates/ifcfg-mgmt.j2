@@ -1,0 +1,14 @@
+NM_CONTROLLED=no
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR="{{ mgmt_v4 }}"
+PREFIX="{{ mgmt_v4_prefix }}"
+DEVICE="{{ mgmt_iface_name }}"
+HWADDR="{{ mgmt_hwaddr }}"
+PEERDNS=no
+TYPE=Ethernet
+NAME="{{ mgmt_iface_name }}"
+DEVICE="{{ mgmt_iface_name }}"
+DEFROUTE=no
+IPV6INIT=no
+IPV6_AUTOCONF=no

@@ -1,0 +1,24 @@
+dnsserver: 8.8.8.8
+search_domain: tcc.local
+
+provisioning_path: "/etc/ansible/"
+vm_playbook_absolute_path: "{{ provisioning_path }}playbooks/2-guest/2-vagrant-prov.yml"
+vm_playbook_extra_vars_path: "{{ provisioning_path }}vars/"
+## Chave SSH pública do usuário que está executando o Playbook
+ansible_prov_pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+utG6NM9AeAroyrVwzxbnLijpdqNxX9TRCYSnp7X2szoHVbY+LcBW6/pP55DkIxnO6LF/27cA1LPyx4gTPiCxbNpf3luhvYA8Ev5y0NtAEZgblcIxW+NZ3PKRLxAq3nJTIwVjRgxvSLQDnKJ6yQdaQKRcU9OIaFKbB/Mp9vbz6D0UoMlXMRqoflBNfjC8lbxibwXPKe8dhELVxf9k7ZW+BB8/ujDa/9fYSL4T5rQQeVj/dEVR281p9TFeGSB9I10hw6/8fkXpF+ngr93Cn4bMMwtye4YRRBdFPXyd/B/dXdqyPe5oHIK28jB92a/DUOYZ0PU8QvI4kDuLydRc33vN root@vitorp.local"
+vm_memory: 1024
+vm_cpus: 1
+
+## Interfaces que serão criadas na VM
+wan_iface_name: wan0
+lan_iface_name: lan0
+mgmt_iface_name: mgmt0
+
+## Interfaces Fìsicas da máquina Física onde será feita a Bridge
+wan_bridge_iface: br-wan
+lan_bridge_iface: br-lan
+mgmt_bridge_iface: br-wan
+
+## IP e Nome do Master utilizado para os Workers entrarem no Cluster. Normalmente é o lan_v4 do node Master-INIT
+kube_master_ip: 192.168.0.210
+kube_master_name: node1guest1.tcc.local

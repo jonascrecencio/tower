@@ -1,0 +1,56 @@
+---
+#- name: Instalando bibliotecas do Network Manager
+#  yum:
+#    name: 
+#      - NetworkManager-libnm
+#      - nm-connection-editor.x86_64
+#      - libsemanage-python
+#      - policycoreutils-python
+#    state: present
+
+#- name: Configurando WAN
+#  nmcli:
+#    conn_name: "eth2"
+#    ifname: "eth2"
+#    type: ethernet
+#    ip4: "{{ wan_v4 }}"
+#    ip6: "{{ wan_v6 }}"
+#    state: present
+
+#- name: Configurando WANv6
+#  nmcli:
+#    conn_name: "eth2"
+#    ifname: "eth2"
+#    type: ethernet
+#    ip6: "{{ wan_v6 }}"
+#    state: present
+
+#- name: Configurando LAN
+#  nmcli:
+#    conn_name: "eth3"
+#    ifname: "eth3"
+#    type: ethernet
+#    ip4: "{{ lan_v4 }}"
+#    state: present
+
+- name: Configurando interface WANv6
+  template:
+    src: ../templates/ifcfg-wan6.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ wan_iface_name }}
+  when: ipv6_enable|bool == true
+
+- name: Configurando interface WANv4
+  template:
+    src: ../templates/ifcfg-wan4.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ wan_iface_name }}
+  when: ipv6_enable|bool != true
+
+- name: Configurando interface LAN
+  template:
+    src: ../templates/ifcfg-lan.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ lan_iface_name }}
+
+- name: Configurando interface de gerenciamento
+  template:
+    src: ../templates/ifcfg-mgmt.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-{{ mgmt_iface_name }}

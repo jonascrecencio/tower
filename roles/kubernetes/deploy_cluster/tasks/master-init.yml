@@ -1,0 +1,52 @@
+---
+- name: Criando estrutura de pastas
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+     - /etc/cni/net.d
+     - /kubernetes/networks/files
+
+- name: Iniciar Cluster Kubernetes
+  shell: kubeadm init --apiserver-advertise-address {{ kube_master_ip }} --pod-network-cidr=10.66.0.0/16
+
+- name: Criar diretório do Kubernetes
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items:
+     - /root/.kube
+
+- name: Executar comandos indicados pelo Kubernetes
+  copy:
+    src: /etc/kubernetes/admin.conf
+    dest: /root/.kube/config
+    remote_src: yes
+    
+- name: Executar comandos indicados pelo Kubernetes
+  file:
+    path: /root/.kube/config
+    owner: root
+    group: root
+  become: yes
+
+- name: Fazer Deploy do Multus-CNI e Flannel
+  shell: "{{ item }}"
+  with_items:
+    - kubectl apply -f /kubernetes/networks/multus-cni/images/multus-daemonset.yml
+    - kubectl apply -f /kubernetes/networks/multus-cni/images/flannel-daemonset.yml
+
+- name: Criar rede padrão Flannel
+  copy:
+    src: ../files/flannel-net01.conf
+    dest: /kubernetes/networks/files/flannel-net01.conf
+
+- name: Criar rede padrão Flannel
+  shell: kubectl create -f /kubernetes/networks/files/flannel-net01.conf
+
+- name: Diminuir Eviction Time Kubernetes
+  lineinfile:
+    dest: /etc/kubernetes/manifests/kube-controller-manager.yaml
+    insertafter:  '^    - --use-service-account-credentials=true'
+    line: '    - --pod-eviction-timeout=40s'
+    state: present

@@ -1,0 +1,11 @@
+---
+- name: Instalando ferramentas básicas
+  yum:
+    name:
+      - vim
+      - net-tools
+      - tcpdump
+      - nmap
+      - mtr
+      - "@Development tools"
+    state: latest

@@ -1,0 +1,10 @@
+---
+- name: Habilitando o Kubernetes na inicialização do sistema
+  systemd:
+    name: kubelet
+    enabled: yes
+    
+- name: Executando o Kubernetes
+  systemd:
+    name: kubelet
+    state: started

@@ -1,0 +1,7 @@
+---
+- name: Configurando Master Inicial
+  include: master-init.yml
+  when: mode == "master-init" or mode == "master-active"
+
+- name: Configurando Worker
+  include: worker.yml

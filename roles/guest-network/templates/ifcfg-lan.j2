@@ -1,0 +1,14 @@
+NM_CONTROLLED=no
+BOOTPROTO=static
+ONBOOT=yes
+IPADDR="{{ lan_v4 }}"
+PREFIX="{{ lan_v4_prefix }}"
+DEVICE="{{ lan_iface_name }}"
+HWADDR="{{ lan_hwaddr }}"
+PEERDNS=no
+TYPE=Ethernet
+NAME="{{ lan_iface_name }}"
+DEVICE="{{ lan_iface_name }}"
+DEFROUTE=no
+IPV6INIT=no
+IPV6_AUTOCONF=no

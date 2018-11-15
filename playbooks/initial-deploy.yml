@@ -1,0 +1,10 @@
+---
+- name: Deploy das máquinas físiscas
+  import_playbook: 1-host/host.yml
+
+- name: Deploy das máquinas virtuais 
+  import_playbook: 2-vagrant/vagrant.yml
+
+# Executar cada um dos playbooks acima na sequencia.
+# Este playbook funciona em partes.
+# Está gerando o Vagrantfile bugado por conta das variaveis no template.

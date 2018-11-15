@@ -1,0 +1,14 @@
+---
+- name: Deploy de máquina virtual
+  hosts:  new_vm_hosts
+
+  roles:
+    - ../../roles/addbox
+      # role que gera o vagrant file e quantidade de vms
+      # Vagrantfile.j2 
+      # define quantas vms, hardware, IPs
+      # executa vagrant up
+      # vagrant provisioning - chama guest.yml através do vagrant
+
+  vars_files: 
+    - ../../vars/main.yml

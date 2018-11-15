@@ -1,0 +1,27 @@
+---
+- name: Instalando o Vagrant
+  yum:
+    name: "{{ vagrant_pkg }}"
+    state: latest
+- name: Instalando o plugin vagrant-libvirt
+  shell: vagrant plugin install vagrant-libvirt
+
+- name: Preparando Vagrantfile do CentOS 7
+  file:
+    path: /root/Vagrantfile
+    state: absent
+
+- name: Baixando Imagem do CentOS 7
+  shell: vagrant init centos/7
+  args:
+    chdir: "/root/"
+
+- name: Ativando Máquina Virtual CentOS 7
+  shell: vagrant up
+  args:
+    chdir: "/root/"
+
+- name: Desativando Máquina Virtual CentOS 7
+  shell: vagrant destroy -f
+  args:
+    chdir: "/root/"
