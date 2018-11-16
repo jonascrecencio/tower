@@ -1,6 +1,6 @@
 ---
 - name: Deploying Service
-  hosts: active_vms
+  hosts: active_vms:new_vms
   become: yes
   
   roles:

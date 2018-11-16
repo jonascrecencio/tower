@@ -1,5 +1,5 @@
-ipsec_name: ipsec02
-ipsec_peer: 2804:7f5:9484:84f9:cafe::2
+ipsec_name: ipsec01
+ipsec_peer: 2804:7f5:9484:9335:cafe::1
 pod_wan_ip4: 192.168.0.241/24
 pod_wan_ip6: 2804:14c:f281:8b52:cafe::0241/64
 pod_wan_gw: 2804:14c:f281:81c6:6eb5:6bff:feb5:e25a

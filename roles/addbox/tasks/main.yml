@@ -1,7 +1,7 @@
 ---
 - name: Copiando arquivos de provisionamento
   copy:
-    src: "{{ provisioning_path }}"
+    src: "../../"
     dest: "{{ provisioning_path }}"
 
 - name: Criando diretório do Vagrant

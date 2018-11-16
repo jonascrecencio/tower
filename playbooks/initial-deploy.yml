@@ -2,9 +2,14 @@
 - name: Deploy das máquinas físiscas
   import_playbook: 1-host/host.yml
 
-- name: Deploy das máquinas virtuais 
-  import_playbook: 2-vagrant/vagrant.yml
+- name: Criação das máquinas virtuais
+  import_playbook: 2-guest/1-vagrant-up.yml
 
-# Executar cada um dos playbooks acima na sequencia.
-# Este playbook funciona em partes.
-# Está gerando o Vagrantfile bugado por conta das variaveis no template.
+- name: Deploy das máquinas virtuais
+  import_playbook: 2-guest/3-guest.yml
+
+- name: Deploy do cluster Kubernetes
+  import_playbook: 3-cluster/cluster.yml
+
+- name: Deploy do container
+  import_playbook: 4-container/container.yml

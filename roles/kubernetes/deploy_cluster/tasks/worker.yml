@@ -16,3 +16,12 @@
   shell: kubeadm join {{ kube_master_ip }}:6443 --token {{ hostvars[item]['token']['stdout'] }} --discovery-token-unsafe-skip-ca-verification
   with_items: "{{ kube_master_name }}"
   when: mode == "worker"
+
+- name: Copiando script de monitoramento
+  copy:
+    src: ../files/cluster_status.sh
+    dest: /bin/cluster_status.sh
+    mode: a+x
+
+- name: Aguardando status Ready
+  shell: /bin/cluster_status.sh

@@ -1,0 +1,101 @@
+all:
+  children:
+    active_hosts:
+      # Hosts em produção
+    active_vms:
+      # VMs em produção
+    active_master:
+    # Deixar sempre o Master Ativo do Cluster com IP e mode = master-active. Utilizado para ingressar workers ao Cluster
+      hosts:
+        node1guest1.tcc.local:
+          ansible_host: 192.168.0.210
+          mode: "master-active"
+    new_hosts:
+      # Novas máquinas físicas a serem provisionadas no ambiente.
+      hosts:
+        node1.tcc.local:
+          ansible_host: 192.168.0.200
+          host_id: "1"
+        node2.tcc.local:
+          ansible_host: 192.168.0.201
+          host_id: "2"
+    new_vm_hosts:
+      # Máquinas físicas em produção que receberão novas VMs.
+      hosts:
+        node1.tcc.local:
+          ansible_host: 192.168.0.200
+          host_id: "1"
+        node2.tcc.local:
+          ansible_host: 192.168.0.201
+          host_id: "2"
+    new_vms:
+      # Novas VMs a serem adicionadas ao ambiente.
+      hosts:
+        node1guest1.tcc.local:
+          ansible_host: 192.168.0.210
+          mgmt_mac: "525400AA0002"
+          lan_mac: "525400AA0001"
+          wan_mac: "525400AA0000"
+          vm_id: "1"
+          vm_host_id: "1"
+          mode: "master-init"
+          wan_v4: "192.168.0.210"
+          wan_v4_prefix: "24"
+          wan_hwaddr: "52:54:00:AA:00:00"
+          lan_v4: "10.230.0.210"
+          lan_v4_prefix: "24"
+          lan_hwaddr: "52:54:00:AA:00:01"
+          mgmt_v4: "192.168.0.211"
+          mgmt_v4_prefix: "24"
+          mgmt_hwaddr: "52:54:00:AA:00:02"
+          ipv6_enable: true
+          wan_v6: "2804:14c:f281:8b52:cafe::0210"
+          wan_v6_prefix: "64"
+          default_gw4: "192.168.0.1"
+          default_gw6: "2804:14c:f281:8b52:6eb5:6bff:feb5:e25a"
+        node1guest2.tcc.local:
+          ansible_host: 192.168.0.215
+          mgmt_mac: "525400AA0102"
+          lan_mac: "525400AA0101"
+          wan_mac: "525400AA0100"
+          vm_id: "2"
+          vm_host_id: "1"
+          mode: "worker"
+          wan_v4: "192.168.0.215"
+          wan_v4_prefix: "24"
+          wan_hwaddr: "52:54:00:AA:01:00"
+          lan_v4: "10.230.0.215"
+          lan_v4_prefix: "24"
+          lan_hwaddr: "52:54:00:AA:01:01"
+          mgmt_v4: "192.168.0.216"
+          mgmt_v4_prefix: "24"
+          mgmt_hwaddr: "52:54:00:AA:01:02"
+          ipv6_enable: true
+          wan_v6: "2804:14c:f281:8b52:cafe::0215"
+          wan_v6_prefix: "64"
+          default_gw4: "192.168.0.1"
+          default_gw6: "2804:14c:f281:8b52:6eb5:6bff:feb5:e25a"
+        node2guest3.tcc.local:
+          ansible_host: 192.168.0.220
+          mgmt_mac: "525400AA0202"
+          lan_mac: "525400AA0201"
+          wan_mac: "525400AA0200"
+          vm_id: "3"
+          vm_host_id: "2"
+          mode: "worker"
+          wan_v4: "192.168.0.220"
+          wan_v4_prefix: "24"
+          wan_hwaddr: "52:54:00:AA:02:00"
+          lan_v4: "10.230.0.220"
+          lan_v4_prefix: "24"
+          lan_hwaddr: "52:54:00:AA:02:01"
+          mgmt_v4: "192.168.0.221"
+          mgmt_v4_prefix: "24"
+          mgmt_hwaddr: "52:54:00:AA:02:02"
+          ipv6_enable: true
+          wan_v6: "2804:14c:f281:8b52:cafe::0220"
+          wan_v6_prefix: "64"
+          default_gw4: "192.168.0.1"
+          default_gw6: "2804:14c:f281:8b52:6eb5:6bff:feb5:e25a"
+    teste-tmp:
+      # Grupo para testes.

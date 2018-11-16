@@ -1,0 +1,73 @@
+all:
+  children:
+    active_hosts:
+    # Hosts em produção
+    active_vms:
+    # VMs em produção
+    active_master:
+    # Deixar sempre o Master Ativo do Cluster com IP e mode = master-active. Utilizado para ingressar workers ao Cluster
+      hosts:
+        node1guest1.tcc.local:
+          ansible_host: 172.16.255.200
+          mode: "master-active"    
+    new_hosts:
+    # Novas máquinas físicas a serem provisionadas no ambiente.
+      hosts:
+        node1.tcc.local:
+          ansible_host: 172.16.255.100
+          host_id: "1"
+    new_vm_hosts:
+    # Máquinas físicas em produção que receberão novas VMs.
+      hosts:
+        node1.tcc.local:
+          ansible_host: 172.16.255.100
+          host_id: "1"
+    new_vms:
+    # Novas VMs a serem adicionadas ao ambiente.
+      hosts:
+        node1guest1.tcc.local:
+          ansible_host: 172.16.255.200
+          mgmt_mac: "525400AA0002"
+          lan_mac: "525400AA0001"
+          wan_mac: "525400AA0000"
+          vm_id: "1"
+          vm_host_id: "1"
+          mode: "master-init"
+          mgmt_v4: "172.16.255.200"
+          mgmt_v4_prefix: "24"
+          mgmt_hwaddr: "52:54:00:AA:00:02"
+          lan_v4: "10.10.0.200"
+          lan_v4_prefix: "24"
+          lan_hwaddr: "52:54:00:AA:00:01"
+          wan_v4: "192.168.15.200"
+          wan_v4_prefix: "24"
+          wan_hwaddr: "52:54:00:AA:00:00"
+          ipv6_enable: true
+          wan_v6: "2804:7f5:9484:9335:faca::1"
+          wan_v6_prefix: "64"
+          default_gw4: "192.168.15.1"
+          default_gw6: "2804:7f5:9484:9335:3657:60ff:fe32:56c8"
+        node1guest2.tcc.local:
+          ansible_host: 172.16.255.201
+          mgmt_mac: "525400AA0102"
+          lan_mac: "525400AA0101"
+          wan_mac: "525400AA0100"
+          vm_id: "2"
+          vm_host_id: "1"
+          mode: "worker"
+          mgmt_v4: "172.16.255.201"
+          mgmt_v4_prefix: "24"
+          mgmt_hwaddr: "52:54:00:AA:01:02"
+          lan_v4: "10.20.0.200"
+          lan_v4_prefix: "24"
+          lan_hwaddr: "52:54:00:AA:01:01"
+          wan_v4: "192.168.15.201"
+          wan_v4_prefix: "24"
+          wan_hwaddr: "52:54:00:AA:01:00"
+          ipv6_enable: true
+          wan_v6: "2804:7f5:9484:9335:faca::2"
+          wan_v6_prefix: "64"
+          default_gw4: "192.168.15.1"
+          default_gw6: "2804:7f5:9484:9335:3657:60ff:fe32:56c8"
+    teste-tmp:
+    # Grupo para testes.
