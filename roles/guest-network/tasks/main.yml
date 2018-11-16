@@ -54,3 +54,8 @@
   template:
     src: ../templates/ifcfg-mgmt.j2
     dest: /etc/sysconfig/network-scripts/ifcfg-{{ mgmt_iface_name }}
+
+- name: Removendo interface temporária
+  file:
+    path: /etc/sysconfig/network-scripts/ifcfg-eth1
+    state: absent
