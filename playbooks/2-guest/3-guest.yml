@@ -4,6 +4,7 @@
   strategy: free
   
   roles:
+    - ../../roles/guest-network # ok
     - ../../roles/repos # ok
     - ../../roles/utils # ok
     - ../../roles/docker # ok

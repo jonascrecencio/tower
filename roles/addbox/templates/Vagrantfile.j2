@@ -9,7 +9,7 @@ Vagrant.configure("2") do |config|
       :type => "bridge",
       :libvirt__iface_name => "{{ mgmt_iface_name }}",
       :mac => "{{ hostvars[groups['new_vms'][my_idx]]['mgmt_mac'] }}",
-      :auto_config => false
+      :ip => "{{ hostvars[groups['new_vms'][my_idx]]['ansible_host'] }}"
     config_{{ shortname }}.vm.network :public_network,
       :dev => "{{ wan_bridge_iface }}",
       :type => "bridge",
@@ -24,7 +24,6 @@ Vagrant.configure("2") do |config|
       :auto_config => false
   config.vm.provision "ansible" do |ansible|
     ansible.playbook = "{{ vm_playbook_absolute_path }}"
-    ansible.extra_vars = "{{ vm_playbook_extra_vars_path }}{{ hostname }}.yml"
   end
   config.vm.provider :libvirt do |domain|
     domain.memory = {{ vm_memory }}

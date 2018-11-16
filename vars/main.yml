@@ -5,7 +5,7 @@ provisioning_path: "/etc/ansible/"
 vm_playbook_absolute_path: "{{ provisioning_path }}playbooks/2-guest/2-vagrant-prov.yml"
 vm_playbook_extra_vars_path: "{{ provisioning_path }}vars/"
 ## Chave SSH pública do usuário que está executando o Playbook
-ansible_prov_pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC+utG6NM9AeAroyrVwzxbnLijpdqNxX9TRCYSnp7X2szoHVbY+LcBW6/pP55DkIxnO6LF/27cA1LPyx4gTPiCxbNpf3luhvYA8Ev5y0NtAEZgblcIxW+NZ3PKRLxAq3nJTIwVjRgxvSLQDnKJ6yQdaQKRcU9OIaFKbB/Mp9vbz6D0UoMlXMRqoflBNfjC8lbxibwXPKe8dhELVxf9k7ZW+BB8/ujDa/9fYSL4T5rQQeVj/dEVR281p9TFeGSB9I10hw6/8fkXpF+ngr93Cn4bMMwtye4YRRBdFPXyd/B/dXdqyPe5oHIK28jB92a/DUOYZ0PU8QvI4kDuLydRc33vN root@vitorp.local"
+ansible_prov_pub_key: "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDzAs26oQkhj98hb79Ukv22cl6J356aClf3aPC5Vy4pZag6mF/g4vq/VyjX2ctZS+adkrAvAM66YhFE4tjn9bJ1jp5K12O2saOuciXdVnjcNB4YBRmTUBjh7zzHQ3DfRj5I3Rhmf9eOg8Rnhjrf00WnUBAw9JjQPYhwZ+ssqRCSmkZf3yQReBLkxqGeUvF7oxvkW//HbBbsG6qrMOSkPDhFjEzugehDBLLH+3E1fv6n6+/a39udrqi6Bk6v/j08mIddX59Rk6thK6W3yW/xG9v6m/nT1dj3zsu5cuaD+JD607zvS6fTrqVftM7pR7cAi5NMA0FIe2v5Z4j4CRe51Bc5 root@ansible-tower"
 vm_memory: 1024
 vm_cpus: 1
 
@@ -17,7 +17,7 @@ mgmt_iface_name: mgmt0
 ## Interfaces Fìsicas da máquina Física onde será feita a Bridge
 wan_bridge_iface: br-wan
 lan_bridge_iface: br-lan
-mgmt_bridge_iface: br-wan
+mgmt_bridge_iface: br-mgmt
 
 ## IP e Nome do Master utilizado para os Workers entrarem no Cluster. Normalmente é o lan_v4 do node Master-INIT
 kube_master_ip: 192.168.0.210

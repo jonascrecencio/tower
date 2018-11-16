@@ -1,0 +1,9 @@
+---
+- name: Reload de máquina virtual
+  hosts:  new_vm_hosts
+
+  roles:
+    - ../../roles/reloadbox
+    
+  vars_files: 
+    - ../../vars/main.yml
