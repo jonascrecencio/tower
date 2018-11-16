@@ -1,15 +1,18 @@
 ---
 - name: Deploy das máquinas físiscas
-  import_playbook: 1-host/host.yml
+  include: 1-host/host.yml
 
 - name: Criação das máquinas virtuais
-  import_playbook: 2-guest/1-vagrant-up.yml
+  include: 2-guest/1-vagrant-up.yml
 
 - name: Deploy das máquinas virtuais
-  import_playbook: 2-guest/3-guest.yml
+  include: 2-guest/3-guest.yml
+
+- name: Reload das máquinas virtuais
+  include: 2-guest/4-vagrant-reload.yml
 
 - name: Deploy do cluster Kubernetes
-  import_playbook: 3-cluster/cluster.yml
+  include: 3-cluster/cluster.yml
 
 - name: Deploy do container
-  import_playbook: 4-container/container.yml
+  include: 4-container/container.yml
