@@ -25,3 +25,4 @@
 
 - name: Aguardando status Ready
   shell: /bin/cluster_status.sh
+  when: mode == "master-active"
