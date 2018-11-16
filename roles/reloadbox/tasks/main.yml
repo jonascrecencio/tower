@@ -4,6 +4,7 @@
     path: "{{ provisioning_path }}guest{{ hostvars[groups['new_vms'][my_idx]]['vm_id'] }}/Vagrantfile"
     regexp: ":ip =>"
     line: "      :auto_config => false"
+    backrefs: yes
   loop: "{{ groups['new_vms'] }}"
   loop_control:
     index_var: my_idx  
