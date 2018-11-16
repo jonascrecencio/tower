@@ -32,7 +32,7 @@ spec:
                           lifecycle:
                                 postStart:
                                         exec:
-                                                command: ["/bin/sh","-c","ip -6 ad add {{ pod_wan_ip6 }} dev net1; ip r add {{ ipsec_peer }} via {{ pod_wan_gw }} dev net1; sleep 2; ipsec whack --listen "]
+                                                command: ["/bin/sh","-c","ip -6 ad add {{ pod_wan_ip6 }} dev net1; ip r add {{ ipsec_peer }} via {{ pod_wan_gw }} dev net1; sleep 2; ipsec whack --listen; ipsec auto --down {{ ipsec_name }}; ipsec auto --up {{ ipsec_name }} &"]
                         volumes:
                         - name: {{ ipsec_name }}-conf
                           hostPath:
