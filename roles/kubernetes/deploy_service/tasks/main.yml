@@ -8,12 +8,12 @@
 
 - name: Copiando ipsec.conf
   copy:
-    src: /etc/ansible/files/ipsec/{{ ipsec_name }}.conf
+    src: "../../../../files/ipsec/{{ ipsec_name }}.conf"
     dest: /kubernetes/ipsec/{{ ipsec_name }}.conf
 
 - name: Copiando ipsec.secrets
   copy:
-    src: /etc/ansible/files/ipsec/{{ ipsec_name }}.secrets
+    src: "../../../../files/ipsec/{{ ipsec_name }}.secrets"
     dest: /kubernetes/ipsec/{{ ipsec_name }}.secrets
 
 ## Executa em todos os Master's
