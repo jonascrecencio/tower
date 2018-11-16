@@ -103,5 +103,5 @@
 
 - name: Copiando arquivos do IPSEC
   copy:
-    src: "{{ provisioning_path }}files/ipsec/"
+    src: "../files/ipsec/"
     dest: "/kubernetes/ipsec/"
